@@ -1,0 +1,29 @@
+{
+  "name": "aosf-design",
+  "owner": {
+    "name": "Art of Styleframe",
+    "url": "https://artofstyleframe.com"
+  },
+  "metadata": {
+    "description": "Design-contract verification for Claude Code, from artofstyleframe.com"
+  },
+  "plugins": [
+    {
+      "name": "aosf-design",
+      "source": "./",
+      "description": "Define a design contract from a styleframe or mock, then verify that what was built in HTML stays faithful to it. Standalone: declares no dependency on any other plugin.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "keywords": [
+        "design",
+        "design-tokens",
+        "design-system",
+        "ui-audit",
+        "wcag",
+        "accessibility",
+        "astro",
+        "tailwind"
+      ]
+    }
+  ]
+}
