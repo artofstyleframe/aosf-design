@@ -1,11 +1,11 @@
-# Floor rules -- `class: floor`
+# Floor rules: `class: floor`
 
 The source of truth here is **WCAG 2.2 AA and a small set of universal anti-patterns**. No
 design contract waives any of them. A contract may set the palette; it may not decide that
 2.9:1 is legible.
 
 Every row cites a success criterion or a named guideline. No accessibility rule carries
-`tip` severity -- AA is the floor, not the target.
+`tip` severity: AA is the floor, not the target.
 
 `stage: design` on every row.
 

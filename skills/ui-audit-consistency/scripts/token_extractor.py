@@ -19,7 +19,7 @@ from pathlib import Path
 SKIP_DIRS = {"node_modules", "dist", ".git", ".astro", "build", ".next", "coverage", ".yarn"}
 
 CSS_VAR = re.compile(r"--([A-Za-z0-9_-]+)\s*:\s*([^;}]+)[;}]")
-# Tailwind config theme keys, e.g.  colors: { brand: '#1f6feb' }  — best effort, no JS parse.
+# Tailwind config theme keys, e.g.  colors: { brand: '#1f6feb' }; best effort, no JS parse.
 TW_ENTRY = re.compile(r"""['"]?([A-Za-z0-9_-]+)['"]?\s*:\s*['"]([^'"]+)['"]""")
 TW_SECTION = re.compile(r"\b(colors|spacing|fontSize|borderRadius|boxShadow|zIndex|transitionDuration)\s*:\s*\{")
 
@@ -116,7 +116,7 @@ def main() -> int:
 
     total = sum(result["counts"].values())
     if total == 0:
-        print("no design tokens found -- there is no contract to audit against")
+        print("no design tokens found: there is no contract to audit against")
         return 0
     print(f"{total} tokens under {result['root']}")
     for group, count in result["counts"].items():

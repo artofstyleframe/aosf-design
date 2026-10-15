@@ -44,7 +44,7 @@ Run live when you can, and read the two as complementary rather than redundant:
 | Which file do I edit? | yes | no, gives a selector |
 
 **The live audit gives a selector, not a file.** On a site with a class prefix the selector
-will not even grep — `.aosf-footer-logo-mark` is built from `${px}footer-logo-mark` in
+will not even grep: `.aosf-footer-logo-mark` is built from `${px}footer-logo-mark` in
 source. Strip the prefix before searching, and say in the finding which file the selector
 resolves to once you have found it. A finding nobody can locate is half a finding.
 
@@ -71,5 +71,5 @@ the tool.
 ## Two runs must agree
 
 Before trusting any number, run the scripts twice on the same commit and compare. If the
-score moves, something is non-deterministic — usually an unfrozen surface or a finding
+score moves, something is non-deterministic: usually an unfrozen surface or a finding
 counted per instance instead of per root cause. Fix that before reporting anything.

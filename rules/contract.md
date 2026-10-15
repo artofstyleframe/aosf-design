@@ -1,4 +1,4 @@
-# Contract rules -- `class: contract`
+# Contract rules: `class: contract`
 
 The source of truth for every rule here is **the project's own design contract**
 (`tokens.json` plus `system.md`), not this plugin's taste. A violation means the built HTML

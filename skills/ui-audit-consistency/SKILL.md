@@ -31,7 +31,7 @@ split:
 
 | Class | Source of truth | A violation means |
 | --- | --- | --- |
-| `contract` | `tokens.json` + `system.md` — the project's own design definition | **Drift.** The build departed from what was approved |
+| `contract` | `tokens.json` + `system.md`, the project's own design definition | **Drift.** The build departed from what was approved |
 | `floor` | WCAG 2.2 AA and universal anti-patterns | An absolute failure. No contract waives it |
 
 If the contract says a 4px spacing base, then 4px is correct and 6px is drift. A project that
@@ -39,7 +39,7 @@ documents its choice is not in violation of somebody else's default. But a contr
 the palette and still not decide that 2.9:1 is legible.
 
 **Where there is no contract, contract rules do not fire.** Say so once in the report header
-and audit the floor alone. Do not substitute defaults — an audit that argues with a design
+and audit the floor alone. Do not substitute defaults, an audit that argues with a design
 instead of verifying it is worse than no audit.
 
 ## Clarify first
@@ -69,7 +69,7 @@ Detect live mode, never assume it:
 node "${CLAUDE_PLUGIN_ROOT}/skills/ui-audit-consistency/scripts/live_audit.mjs" --check
 ```
 
-Exit 0 means live is available. Anything else means static only — say so once in the header,
+Exit 0 means live is available. Anything else means static only: say so once in the header,
 and do not quietly drop the phases that needed a browser. Mark their rules `not evaluated`
 rather than `passed`; a check that did not run must never read like a check that found
 nothing.
@@ -78,11 +78,11 @@ nothing.
 
 Run in order. Each names the one reference to load at that point; do not preload them all.
 
-### Phase 0 — Establish the contract
+### Phase 0: Establish the contract
 
 1. Detect the stack: `astro.config.*`, `tailwind.config.*`, `package.json`.
 2. Find the contract, in this order, and record which one won:
-   `tokens.json` → `system.md` → `.design-sync/` → `DESIGN.md` →
+   `tokens.json` -> `system.md` -> `.design-sync/` -> `DESIGN.md` ->
    `claude-rules/design-principles.md`.
 3. Extract tokens:
 
@@ -92,24 +92,24 @@ Run in order. Each names the one reference to load at that point; do not preload
 
    Reads CSS custom properties, `@theme` blocks and `tailwind.config.*` theme keys.
 4. **If no contract exists, stop and say so.** Offer to generate one from what the code
-   already does — that is `design-token-lock`, and it is the honest first step. Then audit
+   already does: that is `design-token-lock`, and it is the right first step. Then audit
    the floor alone for now.
 5. Pick the surface: one page per template (home, article, category, product, 404), not every
    article. **List the pages in the report.** The surface is part of the score.
 
 Read: `references/methodology.md`.
 
-### Phase 1 — Interactions
+### Phase 1: Interactions
 `DSG-INT-*`, `DSG-A11Y-04`, `DSG-A11Y-05`, `DSG-A11Y-08`.
 
-### Phase 2 — Responsiveness
+### Phase 2: Responsiveness
 1440 / 768 / 375. Static reads breakpoints and fixed widths; live resizes and looks for
 overflow. `DSG-RSP-*`, `DSG-A11Y-15`.
 
-### Phase 3 — Visual fidelity
+### Phase 3: Visual fidelity
 Spacing scale, type scale, alignment, measure, hierarchy. `DSG-SPC-*`, `DSG-TYP-*`.
 
-### Phase 4 — Floor: accessibility and contrast
+### Phase 4: Floor (accessibility and contrast)
 
 ```bash
 python3 scripts/contrast_checker.py --tokens tokens.extracted.json --level AA --suggest --format json
@@ -119,11 +119,11 @@ Then the checklist. `DSG-CON-*`, `DSG-A11Y-*`, `DSG-MOT-01`, `DSG-MOT-02`.
 
 Read: `references/wcag-checklist.md`.
 
-### Phase 5 — States and robustness
+### Phase 5: States and robustness
 Loading, empty, error; very long and very short content; reserved space for anything
 injected. `DSG-STA-*`.
 
-### Phase 6 — Drift
+### Phase 6: Drift
 
 ```bash
 python3 scripts/token_validator.py --tokens tokens.extracted.json --root src --format json
@@ -133,7 +133,7 @@ The only phase that yields a percentage. `DSG-TOK-*`, `DSG-COL-*`, `DSG-CMP-*`.
 
 Read: `references/design-tokens.md`.
 
-### Phase 7 — Content as layout, and console
+### Phase 7: Content as layout, and console
 Measure, comparison tables, anchor offsets, button labels, console errors in live mode.
 `DSG-CNT-*`.
 
@@ -143,10 +143,10 @@ Read: `references/content-layout.md`.
 
 | Tier | Deduction | The test |
 | --- | --- | --- |
-| **Blocker** | −12 | You can write a specific WCAG success criterion or legal clause next to it |
-| **Critical** | −8 | Breaks usability for a real population, but no clause applies |
-| **Warning** | −4 | Degrades the experience |
-| **Tip** | −1 | Polish |
+| **Blocker** | -12 | You can write a specific WCAG success criterion or legal clause next to it |
+| **Critical** | -8 | Breaks usability for a real population, but no clause applies |
+| **Warning** | -4 | Degrades the experience |
+| **Tip** | -1 | Polish |
 
 Blocker is decided by **citability, not by how bad it feels**. No clause, no blocker.
 
@@ -155,19 +155,19 @@ Accessibility findings are never **Tip**. AA is the floor, not the target.
 ## Scoring
 
 ```
-score = max(0, 100 − 12·blockers − 8·criticals − 4·warnings − 1·tips)
+score = max(0, 100 - 12·blockers - 8·criticals - 4·warnings - 1·tips)
 ```
 
-Three scores, never one average — a page can be faithful and unusable, or beautiful and
+Three scores, never one average; a page can be faithful and unusable, or beautiful and
 inaccessible:
 
 | Score | Built from | Bands |
 | --- | --- | --- |
-| **Design** | contract rules outside `DSG-TOK-*` | A 90+ · B 80 · C 70 · D 60 · F below |
+| **Design** | contract rules outside `DSG-TOK-*` | A 90+ / B 80 / C 70 / D 60 / F below |
 | **Accessibility** | every `floor` rule | same bands; flag if any Blocker exists |
 | **Consistency** | `token_validator.py` compliance %, not deductions | same bands |
 
-**Always print the arithmetic:** `100 − (1×12) − (2×8) − (3×4) = 60/100`.
+**Always print the arithmetic:** `100 - (1x12) - (2x8) - (3x4) = 60/100`.
 
 ### What makes the score reproducible
 
@@ -175,7 +175,7 @@ The formula alone does not. These four do:
 
 1. **One root cause is one finding.** The same defect in N places is one entry with a count
    and up to five locations, deducting **once**. Exception: when each instance needs a
-   genuinely different fix. Without this, one missing `aria-label` in forty product cards
+   different fix. Without this, one missing `aria-label` in forty product cards
    drives every page to zero and the report becomes unreadable.
 2. **Frozen surface.** Score only the pages chosen in Phase 0, and list them. Adding a page
    changes the score legitimately; wandering into extra files does not.
@@ -199,16 +199,16 @@ problem.
 
 Order matters. A reviewer who opens on thirty problems stops reading.
 
-1. **What works** — two to four genuine observations.
-2. **Header** — mode, contract file that won, pages audited, three scores with arithmetic,
+1. **What works**: two to four real observations.
+2. **Header**: mode, contract file that won, pages audited, three scores with arithmetic,
    and anything marked `not evaluated`.
 3. **Findings** by severity, each carrying: rule ID; location (`file:line` static,
    `selector @ viewport` live); **the problem and its effect on a user**, not the fix;
    evidence; then one line of direction.
-4. **Issue Priority Matrix** — effort 1–10 against impact 1–10.
-   Effort: 1–2 one value · 3–4 one component · 5–6 multi-component · 7–9 architectural.
-   Impact: 9–10 breaks a11y or core usability · 6–8 degrades · 3–5 polish · 1–2 cosmetic.
-5. **Quick wins** — effort ≤ 3 and impact ≥ 6, as a checklist.
+4. **Issue Priority Matrix**: effort 1-10 against impact 1-10.
+   Effort: 1-2 one value / 3-4 one component / 5-6 multi-component / 7-9 architectural.
+   Impact: 9-10 breaks a11y or core usability / 6-8 degrades / 3-5 polish / 1-2 cosmetic.
+5. **Quick wins**: effort <= 3 and impact >= 6, as a checklist.
 
 **Problems, not prescriptions.** "The gap between the price and the buy button is tighter
 than the gap to the next card, so the button reads as belonging to the wrong product" beats
@@ -272,7 +272,7 @@ Put these in the report rather than letting a reader assume otherwise.
 overflow, anything rendered at runtime, font fallback, or practical stacking. It misses
 contrast behind a class it cannot resolve to a value.
 
-**Live cannot see** hover, focus and dark-mode states unless told to drive them — axe
+**Live cannot see** hover, focus and dark-mode states unless told to drive them: axe
 measures the default rendered state, so those are *unmeasured*, not exempt. It cannot judge
 whether a hierarchy is correct, only whether it is consistent.
 
@@ -292,7 +292,7 @@ can pass all 78 and still confuse people. This is a floor, not a verdict.
 
 | File | Read when |
 | --- | --- |
-| `${CLAUDE_PLUGIN_ROOT}/rules/README.md` | First audit of a session — the registry contract |
+| `${CLAUDE_PLUGIN_ROOT}/rules/README.md` | First audit of a session, the registry contract |
 | `${CLAUDE_PLUGIN_ROOT}/rules/contract.md` | Any drift finding |
 | `${CLAUDE_PLUGIN_ROOT}/rules/floor.md` | Any accessibility finding |
 | `references/methodology.md` | Phase 0; picking the surface; static vs live |

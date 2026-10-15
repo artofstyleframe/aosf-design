@@ -7,13 +7,13 @@ problems stops reading before the important one.
 # UI audit: <what was audited>
 
 ## What works
-- <two to four genuine observations, specific enough to be wrong>
+- <two to four real observations, specific enough to be wrong>
 
 ## Run
 | | |
 | --- | --- |
 | Mode | static / live / both |
-| Contract | <file that won, or "none found -- floor rules only"> |
+| Contract | <file that won, or "none found: floor rules only"> |
 | Pages | <the frozen surface, listed> |
 | Not evaluated | <n> rules (<n> live-only, <n> judgement) |
 
@@ -24,7 +24,7 @@ problems stops reading before the important one.
 | Consistency | 35.2% tokenised | F |
 
 ## Blockers
-### DSG-CON-01 -- footer logotype fails AA at 375px
+### DSG-CON-01: footer logotype fails AA at 375px
 **Where** `.aosf-footer-logo-mark > span` @ mobile, 4 nodes
   -> `packages/shared/src/astro/react/Footer.tsx:137`
 **Problem** The logotype segments take their colour inline from data rather than from a
@@ -63,7 +63,7 @@ limits from SKILL.md>
 ## Rules for filling it
 
 **Every finding needs a location.** `file:line` in static mode, `selector @ viewport` in
-live. A live selector on a prefixed site will not grep — strip the class prefix and resolve
+live. A live selector on a prefixed site will not grep: strip the class prefix and resolve
 it to a file before writing the finding. A finding nobody can locate is half a finding.
 
 **Problem before direction, always.** Describe what goes wrong for a person. One line of
@@ -74,4 +74,4 @@ direction afterwards, and only if the fix is not obvious.
 **One root cause, one entry**, with a count and up to five locations.
 
 **Say what you did not check.** The last section is not an apology, it is the thing that
-makes the rest of the numbers honest.
+keeps the rest of the numbers trustworthy.

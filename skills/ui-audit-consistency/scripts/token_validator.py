@@ -5,7 +5,7 @@ Reports a compliance percentage and a `file:line` list, which is the Consistency
 the audit report. Maps every finding to a DSG-TOK rule so it can be cited.
 
 A literal is only drift when a token could have carried it. Values that no design system
-would tokenise -- zero, 100%, a 1px hairline, `auto` -- are counted as neither compliant nor
+would tokenise, zero, 100%, a 1px hairline, `auto`, are counted as neither compliant nor
 drift, because inflating the denominator with them makes the percentage meaningless.
 
 Exit code 1 when compliance falls below --min-compliance, or on any critical finding.
@@ -33,7 +33,7 @@ DECLARATION = re.compile(r"^\s*--[A-Za-z0-9_-]+\s*:")
 # A colour sitting in an SVG presentation attribute is usually an embedded third-party
 # brand mark (Pinterest #e60023, LinkedIn #0a66c2, Facebook #1877f2). A brand colour is
 # fixed by its owner, so calling it drift is wrong. Counted separately and reported, never
-# silently dropped -- pass --include-svg to fold them back in.
+# silently dropped: pass --include-svg to fold them back in.
 SVG_ATTR = re.compile(r"\b(fill|stroke|stop-color|flood-color)\s*=\s*[\"']([^\"']+)")
 # Tailwind theme tokens are used as utility classes, never through var(), so a dead-token
 # check that only counts var() references marks every one of them dead.
@@ -64,8 +64,18 @@ def iter_files(root: Path):
         yield path
 
 
+_SHORT_HEX = re.compile(r"#([0-9a-f])([0-9a-f])([0-9a-f])(?![0-9a-f])")
+
+
 def normalise(value: str) -> str:
-    return re.sub(r"\s+", " ", value.strip().rstrip(";")).lower()
+    """Collapse whitespace, lower-case, and expand #rgb to #rrggbb.
+
+    Without the expansion `#fff` and `#ffffff` are two different literals, so a page that
+    writes the short form of a colour the contract declares in the long form is reported as
+    drift. On a real site that produced 183 false findings from one component.
+    """
+    text = re.sub(r"\s+", " ", value.strip().rstrip(";")).lower()
+    return _SHORT_HEX.sub(lambda m: "#" + "".join(c * 2 for c in m.groups()), text)
 
 
 def main() -> int:

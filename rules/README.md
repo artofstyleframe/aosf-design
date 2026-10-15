@@ -1,4 +1,4 @@
-# Rule registry -- `aosf-design`
+# Rule registry: `aosf-design`
 
 This directory is the single source of truth for what this plugin can report. A finding the
 skill cannot trace to a rule here is not a finding; it goes in the report's Observations
@@ -38,10 +38,10 @@ Every rule is a row carrying these fields:
 | Field | Meaning |
 | --- | --- |
 | `id` | `DSG-<DOMAIN>-<NN>`. Stable forever. Retired rules stay listed as retired, never renumbered or reused. |
-| `class` | `contract` or `floor` -- see below. |
+| `class` | `contract` or `floor`: see below. |
 | `severity` | `blocker` / `critical` / `warning` / `tip`. |
 | `source` | A WCAG success criterion, a named heuristic, or a cited guideline. **No rule may have an empty source.** |
-| `mode` | `static`, `live`, or `judgement` -- where the rule can actually be evaluated. |
+| `mode` | `static`, `live`, or `judgement`, where the rule can actually be evaluated. |
 | `stage` | `design` for every rule in this plugin. |
 | `supersedes` | Optional. The later-stage rule that subsumes this one when plugins compose. |
 
@@ -49,12 +49,12 @@ Every rule is a row carrying these fields:
 
 This is the distinction the whole plugin turns on.
 
-**`contract`** -- the source of truth is the project's own design definition (`tokens.json`,
+**`contract`**: the source of truth is the project's own design definition (`tokens.json`,
 `system.md`). The skill has no opinion of its own about a spacing base or a palette; it asks
 the contract. If the contract says a 4px base, then 4px is correct and 6px is drift. A
 project that documents its choice cannot be in violation of someone else's default.
 
-**`floor`** -- the source of truth is WCAG 2.2 AA and a small set of universal anti-patterns.
+**`floor`**: the source of truth is WCAG 2.2 AA and a small set of universal anti-patterns.
 No contract can waive these. A design contract may set the palette; it may not decide that
 2.9:1 is legible.
 
@@ -68,9 +68,9 @@ judgement, it is `critical`. When you cannot write the clause, it is not a block
 
 ## Scope this plugin deliberately does not cover
 
-- **Commercial and legal content rules** -- affiliate disclosure, ad-to-content balance,
+- **Commercial and legal content rules**: affiliate disclosure, ad-to-content balance,
   `rel="sponsored"`. These are not design conformance, and a design plugin has no business
   policing them. Use a dedicated review for those.
-- **Performance as a measured metric** -- LCP, CLS as numbers. These need a measurement run,
+- **Performance as a measured metric**: LCP, CLS as numbers. These need a measurement run,
   not a reading of source. Layout properties that *cause* shift (an image without
   dimensions, an ad slot without reserved space) are in scope; the resulting score is not.

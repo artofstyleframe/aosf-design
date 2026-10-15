@@ -1,7 +1,7 @@
 # Heuristics: the rules a script cannot run
 
 Every rule with `mode: judgement` lives here. These need somebody to look. They are in the
-registry anyway, because "a human has to decide this" is a better answer than silence — and
+registry anyway, because "a human has to decide this" is a better answer than silence, and
 because an unattended run must be able to mark them `not evaluated` rather than passed.
 
 ## First impression, two seconds
@@ -28,7 +28,7 @@ rule. A page can have a perfect type scale and still lead with its cookie banner
 
 Heuristics 5, 7, 8 and 10 (error prevention, flexibility, minimalism, help) matter, but on a
 content site they rarely produce a finding a reader can act on. Judge them; report them under
-Observations unless something is genuinely wrong.
+Observations unless something is actually wrong.
 
 ## Gestalt, which is really about spacing
 
@@ -46,11 +46,11 @@ it should be.
 
 ## Two laws worth the space
 
-**Hick's law** — decision time grows with the number of options. A round-up page with
+**Hick's law**: decision time grows with the number of options. A round-up page with
 fourteen equally weighted products is slower to use than one with three recommended and
 eleven listed. This is a design decision, not a defect, but it is worth naming.
 
-**Fitts's law** — a target's cost is its distance over its size. This is the reasoning behind
+**Fitts's law**, a target's cost is its distance over its size. This is the reasoning behind
 `DSG-A11Y-08`, and it is also why the primary action should not be the smallest thing on the
 page.
 

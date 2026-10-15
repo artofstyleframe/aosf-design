@@ -44,7 +44,7 @@ a user.
 | 3.2.1 | Focus causes no surprise | `DSG-INT-06` | Nothing navigates or submits on focus |
 | 3.3.1 | Errors are identified | `DSG-STA-06` | In text, next to the field, not only in colour |
 | 3.3.2 | Labels and instructions exist | `DSG-A11Y-02` | Placeholder is not a label |
-| 3.3.8 | Authentication needs no memory test | — | No transcription puzzle; paste is allowed (`DSG-INT-02`) |
+| 3.3.8 | Authentication needs no memory test | - | No transcription puzzle; paste is allowed (`DSG-INT-02`) |
 
 ## Robust
 

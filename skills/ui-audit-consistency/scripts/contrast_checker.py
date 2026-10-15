@@ -36,7 +36,7 @@ RGB = re.compile(r"^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)")
 
 def to_rgb(value: str) -> tuple[int, int, int] | None:
     """Parse the colour notations a stylesheet actually uses. Returns None for anything
-    this cannot resolve -- an unresolvable colour is reported as unmeasured, never as a pass."""
+    this cannot resolve, an unresolvable colour is reported as unmeasured, never as a pass."""
     v = value.strip()
     match = HEX.match(v)
     if match:
@@ -196,7 +196,7 @@ def main() -> int:
         print(json.dumps(payload, indent=2))
     else:
         if not results:
-            print("no foreground/background pairs identified -- pass --pairs to name them")
+            print("no foreground/background pairs identified: pass --pairs to name them")
         for entry in results:
             if entry["status"] == "unmeasured":
                 print(f"  ?  {entry['fg']} on {entry['bg']}: {entry['why']}")

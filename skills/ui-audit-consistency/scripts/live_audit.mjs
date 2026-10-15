@@ -59,7 +59,7 @@ const AXE_TO_DSG = {
  *
  * Both were in play until 2026-09-22 and they disagreed. axe calls
  * `link-in-text-block` serious, which mapped to `blocker`, while DSG-CON-05 is
- * a `warning` in the registry -- so a report cited a rule and then contradicted
+ * a `warning` in the registry, so a report cited a rule and then contradicted
  * its severity, and the score moved by 8 points on the difference. Severity now
  * comes from here, and axe's impact is only a fallback for a rule this table
  * does not know.
@@ -119,7 +119,7 @@ function parseArgs(argv) {
  *
  * Playwright pins an exact browser build, and an image that ships a different one makes
  * launch fail even though the module imports fine. Rather than telling the user to run
- * `playwright install` -- which a managed image forbids -- look for what is on disk.
+ * `playwright install`, which a managed image forbids, look for what is on disk.
  */
 function discoverExecutable() {
   const base = process.env.PLAYWRIGHT_BROWSERS_PATH;
@@ -190,7 +190,7 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
 
   // WCAG 1.4.3 exempts logotypes by name: "Text that is part of a logo or
   // brand name has no contrast requirement." axe cannot apply that exception,
-  // because nothing in the DOM says "this is our logo" -- so it reports a brand
+  // because nothing in the DOM says "this is our logo", so it reports a brand
   // wordmark drawn in brand colours exactly like body text, and an audit that
   // passes the verdict through inherits a defect the standard does not have.
   //
@@ -198,7 +198,7 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
   // other direction: a real violation on an element that merely has "logo" in a
   // class name would vanish, and a check that found nothing would be
   // indistinguishable from one that was never run. They go to
-  // `exemptCandidates` instead -- reported, attributed, and not scored.
+  // `exemptCandidates` instead, reported, attributed, and not scored.
   const contrastNodes = results.violations
     .filter((violation) => violation.id.startsWith("color-contrast"))
     .flatMap((violation) => violation.nodes.map((node) => node.target.join(" ")));
@@ -250,7 +250,7 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
       exemptCandidates.push({
         rule: rule || null,
         axeRule: violation.id,
-        exemption: "WCAG 1.4.3 logotype exception -- text that is part of a logo or brand name",
+        exemption: "WCAG 1.4.3 logotype exception: text that is part of a logo or brand name",
         note: "Confirm this really is the brand mark. If it is body text in a class merely named for a logo, it is a finding.",
         viewport: viewport.name,
         count: exemptNodes.length,
@@ -265,7 +265,7 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
     findings.push({
       // An axe rule this table does not know is reported AS unmapped. It used to
       // fall back to DSG-A11Y-10, which silently relabelled every unknown rule
-      // as "native semantics before ARIA" -- a keyboard-access failure was
+      // as "native semantics before ARIA", a keyboard-access failure was
       // reported under a rule about ARIA, and the citation looked sound.
       rule: rule || `UNMAPPED:${violation.id}`,
       axeRule: violation.id,
@@ -328,7 +328,7 @@ async function main() {
     try {
       browser = await launch(playwright);
     } catch (error) {
-      return unavailable(`a browser could not be launched -- ${error.message.split("\n")[0]}`);
+      return unavailable(`a browser could not be launched: ${error.message.split("\n")[0]}`);
     } finally {
       if (browser) {
         await browser.close();
@@ -354,7 +354,7 @@ async function main() {
   try {
     browser = await launch(playwright);
   } catch (error) {
-    return unavailable(`a browser could not be launched -- ${error.message.split("\n")[0]}`);
+    return unavailable(`a browser could not be launched: ${error.message.split("\n")[0]}`);
   }
   const pages = [];
   let blockers = 0;
@@ -390,7 +390,7 @@ async function main() {
     console.log(entry.url);
     for (const result of entry.viewports) {
       for (const finding of result.findings) {
-        const unmapped = finding.unmapped ? " [no DSG rule -- report under Observations, do not score]" : "";
+        const unmapped = finding.unmapped ? " [no DSG rule: report under Observations, do not score]" : "";
         console.log(`  ${finding.severity.padEnd(8)} ${finding.rule} ${finding.problem} x${finding.count}  ${finding.where[0]}${unmapped}`);
       }
       // Printed, never hidden: the reader decides whether the exemption holds.
@@ -406,7 +406,7 @@ async function main() {
   }
   console.log(`${blockers} blockers across ${pages.length} page(s) x ${args.viewports.length} viewports`);
   if (exempt > 0) {
-    console.log(`${exempt} contrast finding(s) held back as logotype candidates -- confirm each before dismissing it`);
+    console.log(`${exempt} contrast finding(s) held back as logotype candidates: confirm each before dismissing it`);
   }
   return blockers > 0 ? 1 : 0;
 }

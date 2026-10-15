@@ -48,7 +48,7 @@ compare it to last month's has no use for it.
 
 **One root cause, one deduction.** The same defect in forty product cards is one finding with
 a count of forty and one deduction. List up to five locations. The exception is when each
-instance needs a genuinely different fix — then they are different findings.
+instance needs a different fix: then they are different findings.
 
 Without this rule the arithmetic is worthless: one missing `aria-label` in a shared card
 component drives every page in the site to zero, and the report is unreadable at exactly the

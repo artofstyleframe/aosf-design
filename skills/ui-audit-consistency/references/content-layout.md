@@ -14,17 +14,17 @@ stops tracking the font size.
 `ch` units track the font. A measure set in `px` drifts the moment the type scale changes.
 
 Vertical rhythm matters less than measure and is worth a finding only when the spacing
-between blocks is visibly inconsistent — a paragraph gap larger than the gap to the heading
+between blocks is visibly inconsistent, a paragraph gap larger than the gap to the heading
 above it inverts the grouping (`DSG-SPC-03`).
 
 ## Comparison tables
 
-The place a content site breaks at 375px (`DSG-CNT-01`). Three honest answers, in order of
+The place a content site breaks at 375px (`DSG-CNT-01`). Three answers, in order of
 preference:
 
 1. **Restack** into cards, one per row, with the column name as a label.
 2. **Scroll horizontally on purpose**, with a visible affordance and the first column pinned.
-3. **Drop columns** at narrow widths, if the dropped ones are genuinely secondary.
+3. **Drop columns** at narrow widths, if the dropped ones are secondary.
 
 What is not an answer: letting it overflow the viewport. That is `DSG-RSP-01` and
 `DSG-A11Y-15` at once.
@@ -53,7 +53,7 @@ A heading that a fixed header covers when someone follows an anchor link is `DSG
 it is the same defect as WCAG 2.4.11 in a different costume: the thing you navigated to is
 hidden behind chrome. `scroll-margin-top` on every heading that carries an id.
 
-This bites hardest on long articles with a table of contents — exactly the pages where the
+This bites hardest on long articles with a table of contents: exactly the pages where the
 anchor links get used.
 
 ## Console

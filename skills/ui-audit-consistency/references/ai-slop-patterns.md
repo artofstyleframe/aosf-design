@@ -15,7 +15,7 @@ Nothing here is a `blocker`. These are `warning` and `tip` findings under `DSG-C
   to introduce a new colour per section rather than reuse.
 - **Pure `#000` text on pure `#fff`.** Rarely chosen deliberately; almost always a default
   that survived.
-- **Every state colour taken straight from a framework palette** — the same green, amber and
+- **Every state colour taken straight from a framework palette**, the same green, amber and
   red on every generated site in existence.
 
 ## Layout
@@ -32,7 +32,7 @@ Nothing here is a `blocker`. These are `warning` and `tip` findings under `DSG-C
 ## Type
 
 - **One weight doing all the work**, with size alone carrying hierarchy.
-- **A scale with no ratio** — 14, 16, 18, 24, 32 picked individually rather than generated.
+- **A scale with no ratio**: 14, 16, 18, 24, 32 picked individually rather than generated.
 - **Headings that restate the section label** they sit above.
 
 ## Copy
@@ -53,7 +53,7 @@ Not as a verdict. Name the pattern, say what it costs, and leave the decision:
 
 > Three equal-weight feature cards with icon, bold line and two grey lines is the default
 > shape of a generated section. Nothing here is broken, but the page currently reads as
-> interchangeable with any other site built the same way — worth deciding whether that is
+> interchangeable with any other site built the same way: worth deciding whether that is
 > acceptable for a brand whose subject is design.
 
 A generated page is not wrong for being generated. It is worth flagging when the site's whole

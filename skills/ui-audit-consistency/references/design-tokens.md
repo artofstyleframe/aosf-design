@@ -3,7 +3,7 @@
 ## The contract file
 
 The contract is what makes this skill a verifier rather than a critic. Its format follows
-the lock-file pattern: direction, tokens, patterns, and — the part that matters most —
+the lock-file pattern: direction, tokens, patterns, and the part that matters most:
 **decisions with a rationale and a date**.
 
 ```markdown
@@ -41,7 +41,7 @@ a decision and the other is drift.
 
 **The Pairs section is what makes contrast authoritative.** A token name says a colour's
 role, never which background it lands on. A palette with a light and a dark surface makes
-name-based guessing worthless — pair a dark text token with the dark canvas and you get
+name-based guessing worthless: pair a dark text token with the dark canvas and you get
 1.1:1 and a finding that describes nothing. Declare the pairs that exist and
 `contrast_checker.py` stops guessing.
 
@@ -69,15 +69,15 @@ that denominator, because putting them in produces a number nobody trusts:
 
 **Benign literals.** `0`, `100%`, `auto`, a 1px hairline. No design system tokenises these.
 
-**Colours in SVG presentation attributes.** These are usually third-party brand marks —
+**Colours in SVG presentation attributes.** These are usually third-party brand marks:
 Pinterest `#e60023`, LinkedIn `#0a66c2`, Facebook `#1877f2`. A brand colour is fixed by its
 owner, not by your contract, so calling it drift is simply wrong. They are counted and
 reported as a note, never silently dropped; `--include-svg` folds them back in.
 
 ## Dead tokens, and the trap in detecting them
 
-`DSG-TOK-08` reports a token declared and never used. Detecting that naively — counting
-`var()` references — marks **every Tailwind theme token dead**, because those are used as
+`DSG-TOK-08` reports a token declared and never used. Detecting that naively, by counting
+`var()` references, marks **every Tailwind theme token dead**, because those are used as
 utility classes (`text-accent`) and never through `var()`. The validator scans for utility
 usage before calling any of them dead.
 
