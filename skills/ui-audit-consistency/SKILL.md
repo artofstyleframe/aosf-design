@@ -286,7 +286,7 @@ whether a hierarchy is correct, only whether it is consistent.
 - *Editorial quality and SEO.*
 
 **Neither mode replaces user testing.** Every rule here is a proxy for a human outcome. A page
-can pass all 78 and still confuse people. This is a floor, not a verdict.
+can pass all 79 and still confuse people. This is a floor, not a verdict.
 
 ## References
 

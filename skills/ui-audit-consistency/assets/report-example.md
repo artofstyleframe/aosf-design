@@ -97,5 +97,5 @@ defect in the page.
   impression all need somebody to look.
 - **Hover, focus and dark-mode contrast are unmeasured, not passing.** axe reads the default
   rendered state.
-- **Neither mode replaces user testing.** A page can pass all 78 rules and still confuse
+- **Neither mode replaces user testing.** A page can pass all 79 rules and still confuse
   people.

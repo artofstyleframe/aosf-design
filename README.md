@@ -11,7 +11,7 @@ It reads your design tokens (CSS custom properties, a Tailwind theme, or a `toke
 
 If your contract says a 4px spacing base, then 4px is correct and 6px is drift. But a contract can set a palette and still not decide that 2.9:1 contrast is legible.
 
-Every finding cites one of 78 rules in [`rules/`](./rules/), and every rule names its source. A defect with no matching rule goes under *Observations* and scores nothing, which is what keeps an audit from turning into taste.
+Every finding cites one of 79 rules in [`rules/`](./rules/), and every rule names its source. A defect with no matching rule goes under *Observations* and scores nothing, which is what keeps an audit from turning into taste.
 
 Built for [Art of Styleframe](https://artofstyleframe.com), an editorial on UI design, motion design and web layout.
 

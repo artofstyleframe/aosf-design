@@ -74,6 +74,24 @@ Pinterest `#e60023`, LinkedIn `#0a66c2`, Facebook `#1877f2`. A brand colour is f
 owner, not by your contract, so calling it drift is simply wrong. They are counted and
 reported as a note, never silently dropped; `--include-svg` folds them back in.
 
+## Declared exceptions
+
+Some literals are not drift: a brand colour owned by someone else, or the sample palette a
+colour tool shows its reader. Declare them in the contract instead of arguing with the
+validator. `system.md` takes an `## Exceptions` table:
+
+```
+| kind | scope | rationale | date |
+| --- | --- | --- | --- |
+| literal | #e60023 | Pinterest brand colour, fixed by its owner | 2026-10-16 |
+| file | src/pages/tools/color-palette-generator.astro | sample palettes the tool displays | 2026-10-16 |
+```
+
+A `literal` row exempts that exact value anywhere. A `file` row exempts the colour and type
+literals (DSG-TOK-01, DSG-TOK-03) in that file, because seed data is content, not styling.
+Every exempted use is counted and listed under `declaredExceptions` in the JSON output, never
+silently dropped, so a reader can see how much of the score rests on declarations.
+
 ## Dead tokens, and the trap in detecting them
 
 `DSG-TOK-08` reports a token declared and never used. Detecting that naively, by counting

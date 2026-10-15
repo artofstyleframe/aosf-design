@@ -24,6 +24,7 @@ design instead of verifying it.
 | DSG-TOK-08 | tip | static | A token declared in the contract and used nowhere is dead and should be retired or explained | contract hygiene |
 | DSG-TOK-09 | critical | static | A token referenced in code but absent from the contract means the contract is out of date | contract |
 | DSG-TOK-10 | warning | static | Every scale that departs from its documented default carries a Decisions row with a rationale and a date | Dammyjay93/interface-design, `system-template.md` |
+| DSG-TOK-11 | warning | static | A `var(--token, fallback)` fallback equals the token's declared value, otherwise the same component paints one colour on the site and another where the skin is absent | audit of artofstyleframe.com, 2026-10-16: 73 fallbacks disagreed with their token |
 
 ## Typography (`DSG-TYP`)
 
