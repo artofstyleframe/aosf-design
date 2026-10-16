@@ -87,7 +87,7 @@ Run in order. Each names the one reference to load at that point; do not preload
 3. Extract tokens:
 
    ```bash
-   python3 scripts/token_extractor.py --root . --format json > tokens.extracted.json
+   node scripts/token_extractor.mjs --root . --format json > tokens.extracted.json
    ```
 
    Reads CSS custom properties, `@theme` blocks and `tailwind.config.*` theme keys.
@@ -112,7 +112,7 @@ Spacing scale, type scale, alignment, measure, hierarchy. `DSG-SPC-*`, `DSG-TYP-
 ### Phase 4: Floor (accessibility and contrast)
 
 ```bash
-python3 scripts/contrast_checker.py --tokens tokens.extracted.json --level AA --suggest --format json
+node scripts/contrast_checker.mjs --tokens tokens.extracted.json --level AA --suggest --format json
 ```
 
 Then the checklist. `DSG-CON-*`, `DSG-A11Y-*`, `DSG-MOT-01`, `DSG-MOT-02`.
@@ -126,7 +126,7 @@ injected. `DSG-STA-*`.
 ### Phase 6: Drift
 
 ```bash
-python3 scripts/token_validator.py --tokens tokens.extracted.json --root src --format json
+node scripts/token_validator.mjs --tokens tokens.extracted.json --root src --format json
 ```
 
 The only phase that yields a percentage. `DSG-TOK-*`, `DSG-COL-*`, `DSG-CMP-*`.
@@ -155,7 +155,7 @@ Accessibility findings are never **Tip**. AA is the floor, not the target.
 ## Scoring
 
 ```
-score = max(0, 100 - 12·blockers - 8·criticals - 4·warnings - 1·tips)
+score = max(0, 100 - 12*blockers - 8*criticals - 4*warnings - 1*tips)
 ```
 
 Three scores, never one average; a page can be faithful and unusable, or beautiful and
@@ -165,7 +165,7 @@ inaccessible:
 | --- | --- | --- |
 | **Design** | contract rules outside `DSG-TOK-*` | A 90+ / B 80 / C 70 / D 60 / F below |
 | **Accessibility** | every `floor` rule | same bands; flag if any Blocker exists |
-| **Consistency** | `token_validator.py` compliance %, not deductions | same bands |
+| **Consistency** | `token_validator.mjs` compliance %, not deductions | same bands |
 
 **Always print the arithmetic:** `100 - (1x12) - (2x8) - (3x4) = 60/100`.
 
@@ -249,15 +249,15 @@ to be looked at before the next wave lands on top of it.
 
 ## CI gating
 
-Scripts exit **1 on a Blocker**, 0 otherwise:
+Scripts exit **1 on a Blocker**, 0 otherwise. `live_audit.mjs` also exits **3** when nothing blocks but a page could not be measured, so an unreachable page never reads as a pass:
 
 ```bash
-python3 scripts/contrast_checker.py --tokens tokens.json --level AA || exit 1
-python3 scripts/token_validator.py  --tokens tokens.json --root src --min-compliance 85 || exit 1
-python3 scripts/rules_lint.py       --rules "${CLAUDE_PLUGIN_ROOT}/rules" || exit 1
+node scripts/contrast_checker.mjs --tokens tokens.json --level AA || exit 1
+node scripts/token_validator.mjs  --tokens tokens.json --root src --min-compliance 85 || exit 1
+node scripts/rules_lint.mjs       --rules "${CLAUDE_PLUGIN_ROOT}/rules" || exit 1
 ```
 
-All take `--format json|text` and `--help`. The Python scripts use the standard library only.
+All take `--format json|text` and `--help`. The scripts need Node 18 or newer and no packages; only `live_audit.mjs` also wants Playwright.
 `live_audit.mjs` needs `playwright` and `@axe-core/playwright`, and reports their absence
 rather than crashing.
 

@@ -12,7 +12,7 @@
       "name": "aosf-design",
       "source": "./",
       "description": "Define a design contract from a styleframe or mock, then verify that what was built in HTML stays faithful to it. Standalone: declares no dependency on any other plugin.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "license": "MIT",
       "keywords": [
         "design",

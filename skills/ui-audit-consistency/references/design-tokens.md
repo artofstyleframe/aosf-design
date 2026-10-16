@@ -43,12 +43,12 @@ a decision and the other is drift.
 role, never which background it lands on. A palette with a light and a dark surface makes
 name-based guessing worthless: pair a dark text token with the dark canvas and you get
 1.1:1 and a finding that describes nothing. Declare the pairs that exist and
-`contrast_checker.py` stops guessing.
+`contrast_checker.mjs` stops guessing.
 
 ## Extraction
 
 ```bash
-python3 scripts/token_extractor.py --root . --format json > tokens.extracted.json
+node scripts/token_extractor.mjs --root . --format json > tokens.extracted.json
 ```
 
 Reads CSS custom properties, Tailwind v4 `@theme` blocks and `tailwind.config.*` theme keys,
@@ -61,7 +61,7 @@ name would make the contract ambiguous.
 ## Drift
 
 ```bash
-python3 scripts/token_validator.py --tokens tokens.extracted.json --root src
+node scripts/token_validator.mjs --tokens tokens.extracted.json --root src
 ```
 
 Compliance is `tokenised / (tokenised + literal)`. Two things are deliberately kept out of

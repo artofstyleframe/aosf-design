@@ -42,14 +42,14 @@ Scoring is reproducible: four severity tiers deducted from 100, one root cause c
 
 ## 🧰 Scripts
 
-Plain Python 3 standard library, runnable on their own:
+Plain Node (18 or newer, no packages to install), runnable on their own:
 
 | Script | What it checks |
 | --- | --- |
-| `contrast_checker.py` | WCAG contrast for token pairs, with a `candidate` verdict for pairs only inferred from names |
-| `token_validator.py` | How much of the code actually uses your tokens, with a minimum-compliance gate |
-| `token_extractor.py` | Pulls tokens out of CSS, Tailwind and JSON into one list |
-| `rules_lint.py` | Checks that the rule registry contradicts itself nowhere |
+| `contrast_checker.mjs` | WCAG contrast for token pairs, with a `candidate` verdict for pairs only inferred from names |
+| `token_validator.mjs` | How much of the code actually uses your tokens, with a minimum-compliance gate |
+| `token_extractor.mjs` | Pulls tokens out of CSS, Tailwind and JSON into one list |
+| `rules_lint.mjs` | Checks that the rule registry contradicts itself nowhere |
 | `live_audit.mjs` | The Playwright and axe pass for live mode |
 
 They exit 1 on a blocker, so they can gate CI. Details are in [`skills/ui-audit-consistency/SKILL.md`](./skills/ui-audit-consistency/SKILL.md).

@@ -61,7 +61,7 @@ Licence of this skill: **MIT**.
 - Used for: the shape of a design-system lock file: direction, tokens, patterns, and a
   Decisions table carrying a rationale and a date for each choice, which
   `references/design-tokens.md` uses as the format for declaring intentional exceptions.
-- Changed: adapted into a drift-detection contract consumed by `scripts/token_validator.py`,
+- Changed: adapted into a drift-detection contract consumed by `scripts/token_validator.mjs`,
   and extended to cover Tailwind theme keys alongside CSS custom properties.
 
 ### OneWave AI: Claude Skills, `accessibility-auditor`
@@ -92,13 +92,13 @@ Licence of this skill: **MIT**.
   injected slots). No source surveyed covers this ground. Commercial and legal content rules
   are deliberately NOT here: they are not design conformance, and they are deliberately left to a dedicated review.
 - `references/ai-slop-patterns.md`: written from scratch, for the reason given above.
-- All five scripts under `scripts/`, including `rules_lint.py`, which enforces the
+- All the scripts under `scripts/`, including `rules_lint.mjs`, which enforces the
   registry's own invariants (unique IDs, a cited source on every rule, and the rule that no
   accessibility finding may carry `tip` severity).
 - The rule ID scheme, the determinism rules, and the mode-detection contract.
 - The split into `contract` and `floor` rule classes, which makes the project's own design
   definition the source of truth for drift while keeping WCAG unwaivable.
-- The `candidate` verdict in `contrast_checker.py`: contrast pairs inferred from token names
+- The `candidate` verdict in `contrast_checker.mjs`: contrast pairs inferred from token names
   are advisory, never findings, because a name says a colour's role and not which background
   it actually lands on.
 

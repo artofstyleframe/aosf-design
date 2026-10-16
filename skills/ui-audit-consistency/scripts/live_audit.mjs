@@ -14,6 +14,10 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
+const NETWORK_IDLE_MS = 20000;
+const LOAD_MS = 30000;
+const SETTLE_MS = 2000;
+
 const VIEWPORTS = [
   { name: "desktop", width: 1440, height: 900 },
   { name: "tablet", width: 768, height: 1024 },
@@ -177,7 +181,19 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
   page.on("console", onConsole);
 
   await page.setViewportSize({ width: viewport.width, height: viewport.height });
-  await page.goto(url, { waitUntil: "networkidle" });
+  // networkidle is the honest wait, but a page that polls or streams never reaches it, and
+  // one such page must not cost the whole run. Fall back to "load" and say so in the result.
+  const notes = [];
+  try {
+    await page.goto(url, { waitUntil: "networkidle", timeout: NETWORK_IDLE_MS });
+  } catch (error) {
+    if (error.name !== "TimeoutError") {
+      throw error;
+    }
+    await page.goto(url, { waitUntil: "load", timeout: LOAD_MS });
+    await page.waitForTimeout(SETTLE_MS);
+    notes.push(`network never went idle within ${NETWORK_IDLE_MS / 1000}s; measured after load + ${SETTLE_MS / 1000}s`);
+  }
 
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
 
@@ -291,7 +307,7 @@ async function auditViewport(page, AxeBuilder, url, viewport) {
     });
   }
 
-  return { viewport: viewport.name, findings, exemptCandidates, consoleErrors };
+  return { viewport: viewport.name, findings, exemptCandidates, consoleErrors, notes };
 }
 
 async function main() {
@@ -365,16 +381,21 @@ async function main() {
       const context = await browser.newContext();
       const page = await context.newPage();
       const perViewport = [];
-      for (const viewport of args.viewports) {
-        const result = await auditViewport(page, AxeBuilder, url, viewport);
-        if (args.screenshots) {
-          await page.screenshot({ path: `${args.screenshots}/${viewport.name}.png`, fullPage: false });
+      try {
+        for (const viewport of args.viewports) {
+          const result = await auditViewport(page, AxeBuilder, url, viewport);
+          if (args.screenshots) {
+            await page.screenshot({ path: `${args.screenshots}/${viewport.name}.png`, fullPage: false });
+          }
+          perViewport.push(result);
+          blockers += result.findings.filter((finding) => finding.severity === "blocker").length;
+          exempt += result.exemptCandidates.length;
         }
-        perViewport.push(result);
-        blockers += result.findings.filter((finding) => finding.severity === "blocker").length;
-        exempt += result.exemptCandidates.length;
+        pages.push({ url, viewports: perViewport });
+      } catch (error) {
+        // One unreachable page is "not measured", never a pass and never the end of the run.
+        pages.push({ url, viewports: perViewport, notMeasured: error.message.split("\n")[0] });
       }
-      pages.push({ url, viewports: perViewport });
       await context.close();
     }
   } finally {
@@ -383,12 +404,18 @@ async function main() {
 
   if (args.format === "json") {
     console.log(JSON.stringify({ pages, blockers, exemptCandidates: exempt }, null, 2));
-    return blockers > 0 ? 1 : 0;
+    return exitCode(blockers, pages);
   }
 
   for (const entry of pages) {
     console.log(entry.url);
+    if (entry.notMeasured) {
+      console.log(`  NOT MEASURED  ${entry.notMeasured}`);
+    }
     for (const result of entry.viewports) {
+      for (const note of result.notes || []) {
+        console.log(`  note     @ ${result.viewport}: ${note}`);
+      }
       for (const finding of result.findings) {
         const unmapped = finding.unmapped ? " [no DSG rule: report under Observations, do not score]" : "";
         console.log(`  ${finding.severity.padEnd(8)} ${finding.rule} ${finding.problem} x${finding.count}  ${finding.where[0]}${unmapped}`);
@@ -400,7 +427,8 @@ async function main() {
         console.log(`           ${candidate.note}`);
       }
       for (const error of result.consoleErrors.slice(0, 3)) {
-        console.log(`  warning  DSG-CNT-00 console error @ ${result.viewport}: ${error}`);
+        // No rule covers a console error, so it is an observation: reported, never scored.
+        console.log(`  observed console error @ ${result.viewport}: ${error}  [no DSG rule: report under Observations, do not score]`);
       }
     }
   }
@@ -408,7 +436,19 @@ async function main() {
   if (exempt > 0) {
     console.log(`${exempt} contrast finding(s) held back as logotype candidates: confirm each before dismissing it`);
   }
-  return blockers > 0 ? 1 : 0;
+  const missed = pages.filter((entry) => entry.notMeasured).length;
+  if (missed > 0) {
+    console.log(`${missed} page(s) NOT MEASURED: a page that did not run must not read as a page that passed`);
+  }
+  return exitCode(blockers, pages);
+}
+
+/** 1 = blocker found, 3 = nothing blocking but some page was not measured, 0 = measured and clean. */
+function exitCode(blockers, pages) {
+  if (blockers > 0) {
+    return 1;
+  }
+  return pages.some((entry) => entry.notMeasured) ? 3 : 0;
 }
 
 main()

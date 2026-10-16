@@ -1,7 +1,7 @@
 {
   "name": "aosf-design",
   "displayName": "Art of Styleframe: Design",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Define a design contract from a styleframe or mock, then verify that what was built in HTML stays faithful to it. Standalone: declares no dependency on any other plugin.",
   "license": "MIT",
   "keywords": [

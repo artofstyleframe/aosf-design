@@ -22,7 +22,7 @@ score = max(0, 100 - 12*blockers - 8*criticals - 4*warnings - 1*tips)
 | --- | --- | --- |
 | Design | contract rules outside `DSG-TOK-*` | Layout and hierarchy quality |
 | Accessibility | every `floor` rule | Averaging this away is how an inaccessible site scores a B |
-| Consistency | `token_validator.py` compliance %, not deductions | A percentage answers a different question than a deduction |
+| Consistency | `token_validator.mjs` compliance %, not deductions | A percentage answers a different question than a deduction |
 
 Consistency is a ratio, not a penalty total, because "how much of this is tokenised" and
 "how many defects are there" are different measurements and mixing them yields a number with
